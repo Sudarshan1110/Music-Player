@@ -14,7 +14,7 @@ function secondsToMinutesSeconds(seconds) {
 }
 
 async function getSongs(folder) {
-    let res = await fetch("/songs.json");
+    let res = await fetch("./songs.json");
     let data = await res.json();
 
     let album = data.albums.find(a => a.folder === folder);
@@ -74,7 +74,7 @@ const playMusic = (track, pause = false) => {
 };
 
 async function displayAlbums() {
-    let res = await fetch("/songs.json");
+    let res = await fetch("./songs.json");
     let data = await res.json();
 
     let container = document.querySelector(".cardContainer");
@@ -83,7 +83,7 @@ async function displayAlbums() {
     data.albums.forEach(album => {
         container.innerHTML += `
         <div data-folder="${album.folder}" class="card">
-            <img src="/songs/${album.folder}/${album.cover}">
+            <img src="songs/${album.folder}/${album.cover}">
             <h2>${album.title}</h2>
             <p>${album.description}</p>
         </div>`;
