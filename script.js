@@ -83,7 +83,7 @@ async function displayAlbums() {
     data.albums.forEach(album => {
         container.innerHTML += `
         <div data-folder="${album.folder}" class="card">
-            <img src="songs/${album.cover}">
+            <img src="${album.cover}">
             <h2>${album.title}</h2>
             <p>${album.description}</p>
         </div>`;
