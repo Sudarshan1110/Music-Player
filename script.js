@@ -19,26 +19,32 @@ async function getSongs(folder) {
 
     let album = data.albums.find(a => a.folder === folder);
 
-    currFolder = "songs/" + folder;
+    if (!album) {
+        console.error("Album not found:", folder);
+        return [];
+    }
+
+    currFolder = folder;
     songs = album.songs;
 
-    // render list (same as before)
     let songsUL = document.querySelector(".songList ul");
     songsUL.innerHTML = "";
 
     for (const song of songs) {
+        let name = decodeURIComponent(song.split("/").pop());
+
         songsUL.innerHTML += `
         <li data-file="${song}">
-            <img class="invert" src="images/music.svg">
-            <div class="info">
-                <div>${decodeURIComponent(song).replaceAll("_", " ").replace(".mp3", "")}</div>
-                <div>Song Artist</div>
-            </div>
-            <div class="playnow">
-                <span>Play Now</span>
-                <img class="invert" src="images/play.svg">
-            </div>
-        </li>`;
+    <img class="invert" src="images/music.svg">
+        <div class="info">
+            <div>${name.replaceAll("_", " ").replace(".mp3", "")}</div>
+            <div>Song Artist</div>
+        </div>
+        <div class="playnow">
+            <span>Play Now</span>
+            <img class="invert" src="images/play.svg">
+        </div>
+    </li>`;
     }
 
     document.querySelectorAll(".songList li").forEach(e => {
@@ -48,21 +54,21 @@ async function getSongs(folder) {
     });
 
     return songs;
+    // track = track.split("/").pop(); // safety
 }
 
 const playMusic = (track, pause = false) => {
-    track = track.split("/").pop(); // safety
-
-    currentSong.src = `/${currFolder}/${track}`;
+    currentSong.src = track;
 
     if (!pause) {
         currentSong.play();
-        play.src = "images/pause.svg";
+        play.src = "pause.svg";
     }
 
-    let decoded = decodeURIComponent(track);
+    let name = decodeURIComponent(track.split("/").pop());
+
     document.querySelector(".songinfo").innerHTML =
-        decoded.replaceAll("_", " ").replace(".mp3", "");
+        name.replaceAll("_", " ").replace(".mp3", "");
 
     document.querySelector(".songtime").innerHTML = "00:00 / 00:00";
 };
